@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture - multi-cloud-landing-zone</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0b0c0b;color:#f5f2eb;font-family:'SF Mono','Fira Code','Cascadia Code',Consolas,monospace;line-height:1.6;padding:0}
+a{color:#c8420a;text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:1200px;margin:0 auto;padding:2rem}
+h1{font-size:2rem;color:#f5f2eb;margin-bottom:0.5rem}
+h2{font-size:1.4rem;color:#c8420a;margin:2rem 0 1rem;padding-bottom:0.5rem;border-bottom:1px solid #222}
+h3{font-size:1.1rem;color:#f5f2eb;margin:1.5rem 0 0.75rem}
+.badge{display:inline-block;padding:0.25rem 0.75rem;border-radius:4px;font-size:0.8rem;font-weight:600;margin-right:0.5rem;margin-bottom:0.5rem}
+.badge-lang{background:#1a3a1a;color:#4ade80;border:1px solid #2d5a2d}
+.badge-cat{background:#1a1a3a;color:#60a5fa;border:1px solid #2d2d5a}
+.badge-ver{background:#3a1a1a;color:#f87171;border:1px solid #5a2d2d}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1rem 0}
+.card{background:#141514;border:1px solid #222;border-radius:8px;padding:1.25rem;text-align:center}
+.card-value{font-size:1.5rem;color:#c8420a;font-weight:700}
+.card-label{font-size:0.8rem;color:#888;margin-top:0.25rem}
+.arch-diagram{background:#101210;border:1px solid #222;border-radius:8px;padding:2rem;margin:1rem 0;overflow-x:auto}
+.flow-row{display:flex;justify-content:center;align-items:center;gap:0.5rem;margin:0.75rem 0;flex-wrap:wrap}
+.flow-box{background:#1a1a2e;border:2px solid #c8420a;border-radius:6px;padding:0.5rem 1rem;font-size:0.8rem;text-align:center;min-width:120px;color:#f5f2eb}
+.flow-box.accent{background:#c8420a;color:#fff;border-color:#e8520a}
+.flow-box.blue{border-color:#1982c4;background:#0f1f3a}
+.flow-box.green{border-color:#2b9348;background:#0f2a1a}
+.flow-box.purple{border-color:#533483;background:#1a0f2e}
+.flow-arrow{color:#c8420a;font-size:1.2rem;font-weight:bold}
+.flow-arrow-down{display:flex;justify-content:center;color:#c8420a;font-size:1.2rem;font-weight:bold}
+.flow-label{font-size:0.7rem;color:#888;display:block}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.85rem}
+th{background:#1a1a1a;color:#c8420a;padding:0.75rem;text-align:left;border-bottom:2px solid #333;white-space:nowrap}
+td{padding:0.75rem;border-bottom:1px solid #1a1a1a}
+tr:hover{background:#141514}
+code{background:#1a1a1a;padding:0.15rem 0.4rem;border-radius:3px;font-size:0.85rem;color:#e8a060}
+.checklist{list-style:none;padding:0}
+.checklist li{padding:0.4rem 0;padding-left:1.5rem;position:relative}
+.checklist li::before{content:'[ ]';position:absolute;left:0;color:#c8420a;font-weight:bold}
+.section-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.section-box{background:#141514;border:1px solid #222;border-radius:8px;padding:1.25rem}
+.section-box h3{margin-top:0}
+footer{margin-top:3rem;padding:1.5rem 0;border-top:1px solid #222;text-align:center;font-size:0.75rem;color:#555}
+.env-table td:first-child{color:#4ade80}
+.header-bar{background:#141514;border-bottom:1px solid #222;padding:1.5rem 0}
+.header-bar .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.industry-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.industry-card{background:#141514;border:1px solid #222;border-radius:8px;padding:1rem}
+.industry-card h4{color:#c8420a;margin-bottom:0.5rem;font-size:0.95rem}
+.industry-card p{font-size:0.8rem;color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+<div class="container">
+<div>
+<h1>multi-cloud-landing-zone</h1>
+<p style="color:#888;margin-top:0.25rem">Production-ready multi-cloud landing zone with unified identity federation across AWS, Azure, and GCP</p>
+</div>
+<div>
+<span class="badge badge-lang">HCL (Terraform)</span>
+<span class="badge badge-cat">Infrastructure</span>
+<span class="badge badge-ver">v1.0.0</span>
+</div>
+</div>
+</div>
+
+<div class="container">
+
+<h2>Executive Summary</h2>
+<p>A comprehensive, production-ready multi-cloud landing zone reference architecture spanning AWS, Azure, and GCP. Provides Terraform modules that establish secure, compliant, and well-governed cloud foundations with unified identity federation. The AWS module configures Organizations, SCPs, Control Tower, CloudTrail, GuardDuty, and Security Hub. The Azure module provisions Management Groups, Azure Policy, Blueprints, and Defender. The GCP module establishes Organization hierarchy, Folder structures, and Org Policies. An identity federation module ties all three clouds together via SAML 2.0/OIDC with SCIM provisioning.</p>
+
+<h2>Overview</h2>
+<div class="cards">
+<div class="card"><div class="card-value">HCL</div><div class="card-label">Language</div></div>
+<div class="card"><div class="card-value">Infrastructure</div><div class="card-label">Category</div></div>
+<div class="card"><div class="card-value">4</div><div class="card-label">Modules</div></div>
+<div class="card"><div class="card-value">3</div><div class="card-label">Cloud Providers</div></div>
+<div class="card"><div class="card-value">SAML/OIDC</div><div class="card-label">Identity Federation</div></div>
+<div class="card"><div class="card-value">MIT</div><div class="card-label">License</div></div>
+</div>
+
+<h2>Architecture Diagram</h2>
+<div class="arch-diagram">
+<div class="flow-row">
+<div class="flow-box accent">Enterprise IdP<br><span class="flow-label">Azure AD / Okta</span></div>
+</div>
+<div class="flow-arrow-down">v</div>
+<div class="flow-row">
+<div class="flow-box purple">SAML 2.0 / OIDC<br><span class="flow-label">Identity Federation</span></div>
+<div class="flow-box blue">SCIM<br><span class="flow-label">User Provisioning</span></div>
+</div>
+<div class="flow-label" style="text-align:center">Identity Federation Layer</div>
+<div class="flow-arrow-down">v &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v</div>
+<div class="flow-row">
+<div class="flow-box accent">AWS Landing Zone<br><span class="flow-label">Organizations + Control Tower</span></div>
+<div class="flow-box blue">Azure Landing Zone<br><span class="flow-label">Mgmt Groups + Policy</span></div>
+<div class="flow-box green">GCP Landing Zone<br><span class="flow-label">Folders + Org Policies</span></div>
+</div>
+<div class="flow-arrow-down">v &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v</div>
+<div class="flow-row">
+<div class="flow-box purple">SCPs + GuardDuty<br><span class="flow-label">Security Hub + CloudTrail</span></div>
+<div class="flow-box blue">Defender + Blueprints<br><span class="flow-label">Azure Policy</span></div>
+<div class="flow-box green">Org Policies<br><span class="flow-label">Project Factory</span></div>
+</div>
+<div class="flow-arrow-down">v &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; v</div>
+<div class="flow-row">
+<div class="flow-box accent">Account Structure<br><span class="flow-label">Mgmt/Log/Audit/Shared/Workload</span></div>
+<div class="flow-box blue">Subscription Structure<br><span class="flow-label">Platform/Identity/Connectivity</span></div>
+<div class="flow-box green">Project Structure<br><span class="flow-label">Seed/Logging/Network/Security</span></div>
+</div>
+<div class="flow-arrow-down">v</div>
+<div class="flow-row">
+<div class="flow-box purple">Unified Governance<br><span class="flow-label">Tagging | Cost Mgmt | Compliance | Drift</span></div>
+</div>
+<div class="flow-arrow-down">v</div>
+<div class="flow-row">
+<div class="flow-box accent">Cross-Cloud Networking<br><span class="flow-label">Transit GW | Virtual WAN | NCC | VPN Mesh</span></div>
+</div>
+</div>
+
+<h2>Component Breakdown</h2>
+<table>
+<thead><tr><th>Module</th><th>Path</th><th>Purpose</th><th>Key Resources</th></tr></thead>
+<tbody>
+<tr><td>AWS Landing Zone</td><td><code>modules/aws-landing-zone/</code></td><td>AWS Organization, SCPs, Control Tower guardrails, CloudTrail, GuardDuty, Security Hub, multi-account structure</td><td>aws_organizations_organization, aws_guardduty_detector, aws_securityhub_account</td></tr>
+<tr><td>Azure Landing Zone</td><td><code>modules/azure-landing-zone/</code></td><td>Management Groups, Azure Policy, Blueprints, Defender, subscription structure aligned to CAF</td><td>azurerm_management_group, azurerm_policy_assignment, azurerm_security_center_subscription_pricing</td></tr>
+<tr><td>GCP Landing Zone</td><td><code>modules/gcp-landing-zone/</code></td><td>Organization hierarchy, Folder structure, Org Policies, project factory pattern</td><td>google_folder, google_organization_policy, google_project</td></tr>
+<tr><td>Identity Federation</td><td><code>modules/identity-federation/</code></td><td>Centralized SSO with SAML 2.0/OIDC federation and SCIM provisioning across all clouds</td><td>aws_iam_saml_provider, azuread_application, google_iam_workforce_pool</td></tr>
+</tbody>
+</table>
+
+<h2>Data Flow / Request Flow</h2>
+<div class="section-box">
+<ol style="padding-left:1.5rem;color:#ccc">
+<li><strong>Identity Federation</strong> -- Enterprise IdP (Azure AD/Okta) provides SAML 2.0/OIDC assertions federated to all three cloud providers via the identity-federation module.</li>
+<li><strong>AWS Provisioning</strong> -- The AWS module creates an Organization with SCPs, enables Control Tower, configures CloudTrail, GuardDuty, and Security Hub, and provisions management/log/audit/shared/workload accounts.</li>
+<li><strong>Azure Provisioning</strong> -- The Azure module establishes Management Groups, assigns Azure Policies, deploys Blueprints, enables Defender, and creates platform/identity/connectivity/management/landing zone subscriptions.</li>
+<li><strong>GCP Provisioning</strong> -- The GCP module creates the Organization, folder hierarchy, Org Policies, and provisions seed/logging/network/security/workload projects.</li>
+<li><strong>Governance</strong> -- Unified tagging standards, cost management, compliance reporting, and drift detection are enforced across all three clouds.</li>
+<li><strong>Cross-Cloud Networking</strong> -- AWS Transit Gateway, Azure Virtual WAN, and GCP Network Connectivity Center are connected via a VPN mesh for inter-cloud connectivity.</li>
+</ol>
+</div>
+
+<h2>Security Controls</h2>
+<table>
+<thead><tr><th>Control</th><th>Implementation</th></tr></thead>
+<tbody>
+<tr><td>Identity Federation</td><td>Centralized SAML 2.0/OIDC with SCIM provisioning; no local cloud accounts</td></tr>
+<tr><td>Service Control Policies</td><td>AWS SCPs restrict regions, services, and actions at the Organization level</td></tr>
+<tr><td>Azure Policy</td><td>Azure Policy assignments enforce compliance at Management Group scope</td></tr>
+<tr><td>GCP Org Policies</td><td>Organization-level constraints restrict regions, services, and configurations</td></tr>
+<tr><td>Security Monitoring</td><td>GuardDuty (AWS), Defender (Azure), Security Command Center (GCP)</td></tr>
+<tr><td>Audit Logging</td><td>CloudTrail (AWS), Activity Log (Azure), Audit Logs (GCP) with centralized archival</td></tr>
+<tr><td>Network Segmentation</td><td>Separate accounts/subscriptions/projects per workload classification</td></tr>
+<tr><td>Encryption</td><td>Encryption at rest and in transit enforced via policy across all providers</td></tr>
+</tbody>
+</table>
+
+<h2>Industry Adaptation</h2>
+<div class="industry-grid">
+<div class="industry-card"><h4>Healthcare</h4><p>HIPAA BAA-eligible regions, PHI data classification tags, 365-day log retention, Defender/GuardDuty for medical device network monitoring.</p></div>
+<div class="industry-card"><h4>Finance</h4><p>PCI-DSS Security Hub checks, SOX audit log archival, MFA-enforced federation, regulatory jurisdiction region restrictions.</p></div>
+<div class="industry-card"><h4>Government</h4><p>GovCloud/Azure Government/Assured Workloads, PIV/CAC-integrated SAML, NIST 800-53 control mapping, US-only region restrictions.</p></div>
+<div class="industry-card"><h4>Retail</h4><p>PCI scope subscription isolation, CCPA/GDPR data residency region controls, customer data breach playbooks.</p></div>
+<div class="industry-card"><h4>Education</h4><p>FERPA compliance tags, domestic region restrictions, Shibboleth/InCommon SAML federation, student data access monitoring.</p></div>
+</div>
+
+<h2>Production Readiness Checklist</h2>
+<ul class="checklist">
+<li>Configure cloud provider credentials for all three providers (AWS, Azure, GCP)</li>
+<li>Set up Terraform backend with remote state and state locking</li>
+<li>Configure identity federation with enterprise IdP (Azure AD/Okta)</li>
+<li>Define allowed regions for each cloud provider per compliance requirements</li>
+<li>Enable security services (GuardDuty, Defender, SCC) across all clouds</li>
+<li>Configure audit logging with centralized archival and retention policies</li>
+<li>Define tagging standards and cost allocation tags</li>
+<li>Test with <code>terraform plan</code> in a sandbox environment</li>
+<li>Set up cross-cloud VPN mesh for inter-cloud connectivity</li>
+<li>Configure drift detection and compliance reporting</li>
+<li>Conduct security review with compliance team</li>
+</ul>
+
+<h2>Configuration / Environment Variables</h2>
+<table class="env-table">
+<thead><tr><th>Variable</th><th>Required</th><th>Default</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>AWS_ACCESS_KEY_ID</code></td><td>Yes</td><td>--</td><td>AWS access key for Organization management account</td></tr>
+<tr><td><code>AWS_SECRET_ACCESS_KEY</code></td><td>Yes</td><td>--</td><td>AWS secret key</td></tr>
+<tr><td><code>ARM_SUBSCRIPTION_ID</code></td><td>Yes</td><td>--</td><td>Azure management subscription ID</td></tr>
+<tr><td><code>ARM_TENANT_ID</code></td><td>Yes</td><td>--</td><td>Azure AD tenant ID</td></tr>
+<tr><td><code>ARM_CLIENT_ID</code></td><td>Yes</td><td>--</td><td>Azure service principal client ID</td></tr>
+<tr><td><code>ARM_CLIENT_SECRET</code></td><td>Yes</td><td>--</td><td>Azure service principal secret</td></tr>
+<tr><td><code>GOOGLE_PROJECT</code></td><td>Yes</td><td>--</td><td>GCP seed project ID</td></tr>
+<tr><td><code>GOOGLE_CREDENTIALS</code></td><td>Yes</td><td>--</td><td>GCP service account key JSON path</td></tr>
+</tbody>
+</table>
+
+<h2>Deployment</h2>
+<div class="section-grid">
+<div class="section-box">
+<h3>Local Development</h3>
+<pre><code>git clone https://github.com/kogunlowo123/multi-cloud-landing-zone.git
+cd multi-cloud-landing-zone
+terraform init
+terraform validate
+terraform fmt -recursive
+terraform plan</code></pre>
+</div>
+<div class="section-box">
+<h3>Production Deployment</h3>
+<pre><code># Configure remote backend
+terraform init -backend-config=backend.hcl
+
+# Deploy per-module or full stack
+terraform plan -var-file=prod.tfvars
+terraform apply -auto-approve
+
+# Verify with drift detection
+terraform plan -detailed-exitcode</code></pre>
+</div>
+</div>
+
+<h2>Links</h2>
+<table>
+<tbody>
+<tr><td>Repository</td><td><a href="https://github.com/kogunlowo123/multi-cloud-landing-zone">github.com/kogunlowo123/multi-cloud-landing-zone</a></td></tr>
+<tr><td>README</td><td><a href="../README.md">README.md</a></td></tr>
+<tr><td>Changelog</td><td><a href="../CHANGELOG.md">CHANGELOG.md</a></td></tr>
+<tr><td>Industry Adaptation</td><td><a href="../INDUSTRY-ADAPTATION.md">INDUSTRY-ADAPTATION.md</a></td></tr>
+<tr><td>License</td><td><a href="../LICENSE">MIT License</a></td></tr>
+</tbody>
+</table>
+
+<footer>
+Generated on 2026-03-15 | multi-cloud-landing-zone v1.0.0 | Architecture Documentation
+</footer>
+
+</div>
+</body>
+</html>

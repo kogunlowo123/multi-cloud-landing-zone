@@ -1,0 +1,65 @@
+{
+  "repo": "multi-cloud-landing-zone",
+  "generated": "2026-03-15",
+  "scores": {
+    "documentation": 6,
+    "maintainability": 6,
+    "security": 6,
+    "observability": 4,
+    "deployability": 7,
+    "portability": 8,
+    "testability": 6,
+    "scalability": 7,
+    "reusability": 8,
+    "production_readiness": 5
+  },
+  "overall": 6.3,
+  "top_gaps": [
+    "No CONTRIBUTING.md for contributor guidance",
+    "No SECURITY.md for vulnerability reporting",
+    "No CODEOWNERS file for review ownership",
+    "No .editorconfig for consistent formatting",
+    "No .gitattributes for line ending normalization",
+    "No .gitignore file present",
+    "No pre-commit hook configuration",
+    "Tests exist but lack integration/end-to-end coverage",
+    "Only one example configuration (complete)",
+    "Module directories lack README files"
+  ],
+  "fixes_applied": [
+    "GitHub Actions CI workflow configured",
+    "Test infrastructure present (tests/ directory)",
+    "LICENSE clearly defined",
+    "CHANGELOG.md tracks version history",
+    "README.md present",
+    "Four cloud-specific sub-modules (aws, azure, gcp, identity-federation)",
+    "Multi-cloud architecture supports portability",
+    "Complete example with providers and outputs",
+    "Identity federation module for cross-cloud access",
+    "Tagged release (v1.0.0) available"
+  ],
+  "remaining_risks": [
+    "No security policy or vulnerability reporting process",
+    "No contributor guidelines may discourage contributions",
+    "Missing .gitignore could lead to sensitive files being committed",
+    "No CODEOWNERS means no enforced review process",
+    "Module directories lack documentation"
+  ],
+  "roadmap": {
+    "30_day": [
+      "Add CONTRIBUTING.md, SECURITY.md, and CODEOWNERS",
+      "Create .gitignore, .editorconfig, and .gitattributes",
+      "Add README files to all module directories"
+    ],
+    "60_day": [
+      "Add basic and advanced example configurations",
+      "Add Terratest integration tests for each cloud provider",
+      "Add pre-commit hooks and tfsec/checkov to CI"
+    ],
+    "90_day": [
+      "Add cross-cloud connectivity validation tests",
+      "Create multi-cloud architecture diagram",
+      "Add compliance/governance policy-as-code checks"
+    ]
+  }
+}
