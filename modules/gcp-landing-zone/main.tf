@@ -1,19 +1,3 @@
-###############################################################################
-# GCP Landing Zone Module
-# Provisions Organization hierarchy, Folders, Org Policies, and core projects
-###############################################################################
-
-terraform {
-  required_version = ">= 1.5.0"
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 5.0"
-    }
-  }
-}
-
 # -----------------------------------------------------------------------------
 # Folder Hierarchy
 # -----------------------------------------------------------------------------
