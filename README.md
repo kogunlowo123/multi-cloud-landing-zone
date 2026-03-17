@@ -1,3 +1,10 @@
+![Terraform](https://img.shields.io/badge/Terraform-%3E%3D1.5-blueviolet?logo=terraform)
+![AWS](https://img.shields.io/badge/AWS-FF9900?logo=amazonaws&logoColor=white)
+![Azure](https://img.shields.io/badge/Azure-0078D4?logo=microsoftazure&logoColor=white)
+![GCP](https://img.shields.io/badge/GCP-4285F4?logo=googlecloud&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![GitHub release](https://img.shields.io/github/v/release/kogunlowo123/multi-cloud-landing-zone)
+
 # Multi-Cloud Landing Zone
 
 A comprehensive, production-ready multi-cloud landing zone reference architecture spanning AWS, Azure, and GCP. This project provides Terraform modules that establish secure, compliant, and well-governed cloud foundations with unified identity federation across all three major cloud providers.
